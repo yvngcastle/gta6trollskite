@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ff2b90" />
+  <title>Grand Theft Auto VI — Play Now</title>
+  <link rel="icon" type="image/svg+xml" href="./gta-vi-logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- =====================================================================
+       GOOGLE ADSENSE INITIALIZATION (PLACEHOLDER)
+       Uncomment and replace ca-pub-XXXXXXXXXXXXXXXX with your Publisher ID.
+       ===================================================================== -->
+  <!--
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+       crossorigin="anonymous"></script>
+  -->
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Montserrat", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #000000;
+      color: #ffffff;
+    }
+
+    /* Full-Screen Artwork Background + Subtle Overlay */
+    .bg-scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(
+          180deg,
+          rgba(22, 6, 36, 0.25) 0%,
+          rgba(32, 9, 44, 0.14) 50%,
+          rgba(15, 4, 26, 0.5) 100%
+        ),
+        url("./background.avif");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    /* Centered Minimal Layout */
+    .main-container {
+      position: relative;
+      z-index: 10;
+      min-height: 100svh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 24px 20px clamp(135px, 19vh, 185px);
+    }
+
+    /* Rectangular PLAY NOW Button */
+    .play-now-btn {
+      width: 270px;
+      height: 76px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: rgba(18, 6, 30, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.92);
+      border-radius: 3px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 1.16rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-indent: 0.2em;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+      transition:
+        transform 0.22s ease,
+        background-color 0.22s ease,
+        box-shadow 0.22s ease;
+    }
+
+    .play-now-btn:hover,
+    .play-now-btn:focus-visible {
+      transform: translateY(-4px) scale(1.03);
+      background: rgba(255, 255, 255, 0.24);
+      box-shadow:
+        0 16px 36px rgba(0, 0, 0, 0.65),
+        0 0 26px rgba(255, 43, 144, 0.55);
+      outline: none;
+    }
+
+    .play-now-btn:active {
+      transform: translateY(-1px) scale(1.01);
+    }
+
+    .play-icon {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      flex-shrink: 0;
+      margin-right: -0.2em;
+    }
+
+    /* Advertisement Placeholders (AdSense-Ready) */
+    .ad-slot {
+      position: fixed;
+      z-index: 20;
+      background: rgba(14, 5, 24, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1.5px dashed rgba(255, 255, 255, 0.42);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+    }
+
+    .ad-label {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .ad-dimensions {
+      margin-top: 4px;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.42);
+    }
+
+    /* Desktop Sidebar Ad (160 x 110) */
+    .ad-sidebar {
+      top: 20px;
+      right: 20px;
+      width: 160px;
+      height: 110px;
+    }
+
+    /* Desktop Bottom Banner Ad (728 x 90) */
+    .ad-banner {
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(728px, calc(100vw - 24px));
+      height: 90px;
+    }
+
+    /* =====================================================================
+       FULL-SCREEN RICKROLL TAKEOVER (NO CONTROLS, NO BUTTONS, NOTHING ELSE)
+       ===================================================================== */
+    #rickrollVideo {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      object-fit: cover;
+      background: #000000;
+      display: none;
+      pointer-events: none;
+    }
+
+    body.rickrolled > *:not(#rickrollVideo) {
+      display: none !important;
+    }
+
+    body.rickrolled #rickrollVideo {
+      display: block;
+    }
+
+    /* Mobile Responsive Layout */
+    @media (max-width: 768px) {
+      .ad-sidebar {
+        display: none;
+      }
+
+      .ad-banner {
+        bottom: 12px;
+        width: calc(100vw - 24px);
+        height: 64px;
+      }
+
+      .main-container {
+        padding-bottom: 105px;
+      }
+
+      .play-now-btn {
+        width: min(245px, 82vw);
+        height: 64px;
+        font-size: 1rem;
+        letter-spacing: 0.16em;
+        text-indent: 0.16em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-scene" aria-hidden="true"></div>
+
+  <!-- Desktop Sidebar Ad Placement (160 x 110) -->
+  <aside class="ad-slot ad-sidebar" aria-label="Advertisement">
+    <span class="ad-label">AD SPACE</span>
+    <span class="ad-dimensions">160 &times; 110</span>
+    <!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:160px;height:110px"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="YYYYYYYYYY"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+  </aside>
+
+  <!-- Centered PLAY NOW Button -->
+  <main class="main-container">
+    <button
+      type="button"
+      id="playNowBtn"
+      class="play-now-btn"
+    >
+      <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <polygon points="5,3 20,12 5,21" />
+      </svg>
+      <span>PLAY NOW</span>
+    </button>
+  </main>
+
+  <!-- Bottom Banner Ad Placement (728 x 90 on Desktop) -->
+  <aside class="ad-slot ad-banner" aria-label="Advertisement">
+    <span class="ad-label">ADVERTISEMENT</span>
+    <span class="ad-dimensions">728 &times; 90 AD SPACE</span>
+    <!--
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="ZZZZZZZZZZ"
+         data-ad-format="horizontal"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+  </aside>
+
+  <!-- Pure Chromeless Full-Screen Rickroll Video -->
+  <video
+    id="rickrollVideo"
+    src="./rickroll.mp4"
+    loop
+    playsinline
+    preload="auto"
+    disablepictureinpicture
+  ></video>
+
+  <script>
+    (function () {
+      const playNowBtn = document.getElementById("playNowBtn");
+      const rickrollVideo = document.getElementById("rickrollVideo");
+
+      function triggerRickroll() {
+        document.body.classList.add("rickrolled");
+
+        rickrollVideo.currentTime = 0;
+        rickrollVideo.muted = false;
+        const playPromise = rickrollVideo.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            rickrollVideo.muted = true;
+            rickrollVideo.play().catch(() => {});
+          });
+        }
+
+        const root = document.documentElement;
+        if (root.requestFullscreen && !document.fullscreenElement) {
+          root.requestFullscreen().catch(() => {});
+        } else if (root.webkitRequestFullscreen) {
+          root.webkitRequestFullscreen();
+        }
+      }
+
+      playNowBtn.addEventListener("click", triggerRickroll);
+    })();
+  </script>
+</body>
+</html>
